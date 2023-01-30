@@ -1,0 +1,28 @@
+{
+  "name": "12-team-profile-generator",
+  "version": "1.0.0",
+  "description": "A team profile generator",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nwinch1512/12-team-profile-generator.git"
+  },
+  "author": "Nwinch1512",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Nwinch1512/12-team-profile-generator/issues"
+  },
+  "homepage": "https://github.com/Nwinch1512/12-team-profile-generator#readme",
+  "dependencies": {
+    "inquirer": "^6.5.2"
+  },
+  "devDependencies": {
+    "jest": "^29.4.1"
+  }
+}
