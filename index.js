@@ -19,7 +19,7 @@ const createFileAsync = util.promisify(fs.writeFile);
 let team = [];
 
 // array of questions for user
-const questionsEmployee = [
+const questionsManager = [
   {
     type: "input",
     name: "managerName",
@@ -27,17 +27,17 @@ const questionsEmployee = [
   },
   {
     type: "input",
-    name: "managerEmployeeId",
+    name: "managerId",
     message: "Enter your team manager's employee ID",
   },
   {
     type: "input",
-    name: "mangerEmail",
+    name: "managerEmail",
     message: "Enter your team manager's email address",
   },
   {
     type: "input",
-    name: "mangerOfficeNumber",
+    name: "managerOfficeNumber",
     message: "Enter your team manager's office number",
   },
 ];
@@ -97,13 +97,13 @@ const questionsIntern = [
 
 function init() {
   inquirer
-    .prompt([...questionsEmployee])
+    .prompt([...questionsManager])
     .then((data) => {
       const manager = new Manager(
         data.managerName,
         data.managerId,
         data.managerEmail,
-        data.mangerOfficeNumber
+        data.managerOfficeNumber
       );
 
       team.push(manager);
@@ -155,7 +155,12 @@ function addEngineer() {
 
 function addIntern() {
   inquirer.prompt([...questionsIntern]).then((internData) => {
-    const intern = new Intern();
+    const intern = new Intern(
+      internData.internName,
+      internData.internId,
+      internData.internEmail,
+      internData.internSchool
+    );
     team.push(intern);
     addEmployee();
   });
