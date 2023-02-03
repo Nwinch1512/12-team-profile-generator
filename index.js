@@ -3,6 +3,7 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
+const util = require("util");
 const fs = require("fs");
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
@@ -10,64 +11,56 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 
-// import Employee from ("./lib/Employee.js");
 const Employee = require("./lib/Employee.js");
-const Manager = require("./lib/Manager.js");
-const Intern = require("./lib/Intern.js");
-const Engineer = require("./lib/Engineer.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 const createFileAsync = util.promisify(fs.writeFile);
 
+let team = [];
+
 // array of questions for user
-const questionsCore = [
+const questionsEmployee = [
   {
     type: "input",
-    name: "manager-name",
+    name: "managerName",
     message: "Enter your team manager's name",
   },
   {
     type: "input",
-    name: "manger-employee-id",
+    name: "managerEmployeeId",
     message: "Enter your team manager's employee ID",
   },
   {
     type: "input",
-    name: "manger-email",
+    name: "mangerEmail",
     message: "Enter your team manager's email address",
   },
   {
     type: "input",
-    name: "manger-office-number",
+    name: "mangerOfficeNumber",
     message: "Enter your team manager's office number",
-  },
-  {
-    type: "list",
-    name: "job",
-    message: "Please select a job title using arrow keys",
-    choices: ["Engineer", "Intern", "Finish building team"],
   },
 ];
 
 const questionsEngineer = [
   {
     type: "input",
-    name: "enginee-name",
+    name: "engineerName",
     message: "Enter the engineer's name",
   },
   {
     type: "input",
-    name: "id",
+    name: "engineerId",
     message: "Enter the engineer's ID",
   },
   {
     type: "input",
-    name: "engineer-email",
+    name: "engineerEmail",
     message: "Enter the engineer's email",
   },
   {
     type: "input",
-    name: "engineer-github",
+    name: "engineerGithub",
     message: "Enter the engineer's GitHub username",
   },
 ];
@@ -75,22 +68,22 @@ const questionsEngineer = [
 const questionsIntern = [
   {
     type: "input",
-    name: "intern-name",
+    name: "internName",
     message: "Enter the intern's name",
   },
   {
     type: "input",
-    name: "id",
+    name: "internId",
     message: "Enter the intern's ID",
   },
   {
     type: "input",
-    name: "intern-email",
+    name: "internEmail",
     message: "Enter the intern's email",
   },
   {
     type: "input",
-    name: "intern-school",
+    name: "internSchool",
     message: "Enter the intern's school",
   },
 ];
@@ -104,10 +97,66 @@ const questionsIntern = [
 
 function init() {
   inquirer
-    .prompt([...questionsCore])
+    .prompt([...questionsEmployee])
     .then((data) => {
-      generateEmployee(data);
-      return createFileAsync("employee.html", `${data.id}`);
+      const manager = new Manager(
+        data.managerName,
+        data.managerId,
+        data.managerEmail,
+        data.mangerOfficeNumber
+      );
+
+      team.push(manager);
+
+      addEmployee();
     })
     .catch((err) => console.error(err));
+}
+
+init();
+
+function addEmployee() {
+  inquirer
+    .prompt([
+      ...[
+        {
+          type: "list",
+          name: "teamMember",
+          message: "Please add a team member (using arrow keys)",
+          choices: ["Engineer", "Intern", "Finish building team"],
+        },
+      ],
+    ])
+    .then((data) => {
+      if (data.teamMember === "Engineer") {
+        addEngineer();
+      } else if (data.teamMember === "Intern") {
+        addIntern();
+      } else if (data.teamMember === "Finish building team") {
+        //done
+        let teamHtml = render(team);
+        createFileAsync("team.html", teamHtml);
+      }
+    });
+}
+
+function addEngineer() {
+  inquirer.prompt([...questionsEngineer]).then((engineerData) => {
+    const engineer = new Engineer(
+      engineerData.engineerName,
+      engineerData.engineerId,
+      engineerData.engineerEmail,
+      engineerData.engineerGitHub
+    );
+    team.push(engineer);
+    addEmployee();
+  });
+}
+
+function addIntern() {
+  inquirer.prompt([...questionsIntern]).then((internData) => {
+    const intern = new Intern();
+    team.push(intern);
+    addEmployee();
+  });
 }
