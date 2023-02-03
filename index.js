@@ -127,11 +127,17 @@ function addEmployee() {
       } else if (data.teamMember === "Intern") {
         addIntern();
       } else if (data.teamMember === "Finish building team") {
-        //done
-        let teamHtml = render(team);
-        createFileAsync("team.html", teamHtml);
+        buildTeam();
       }
     });
+}
+
+function buildTeam() {
+  // Create the output directory if the output path doesn't exist
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR);
+  }
+  fs.writeFileSync(outputPath, render(team), "utf-8");
 }
 
 // Function to capture Engineer details to create instance of Engineer from class
