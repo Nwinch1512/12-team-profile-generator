@@ -17,6 +17,7 @@ const Intern = require("./lib/Intern.js");
 const Engineer = require("./lib/Engineer.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
+const createFileAsync = util.promisify(fs.writeFile);
 
 // array of questions for user
 const questionsCore = [
@@ -56,7 +57,7 @@ const questionsEngineer = [
   },
   {
     type: "input",
-    name: "engineer-id",
+    name: "id",
     message: "Enter the engineer's ID",
   },
   {
@@ -79,7 +80,7 @@ const questionsIntern = [
   },
   {
     type: "input",
-    name: "intern-id",
+    name: "id",
     message: "Enter the intern's ID",
   },
   {
@@ -93,3 +94,20 @@ const questionsIntern = [
     message: "Enter the intern's school",
   },
 ];
+// Set up inquirer to prompt user for questions to collect info on employees in software engineering team
+
+// Take response data and create an instance of each class to create an object for each employee
+//let employee = new Employee(name,id,email);
+
+// Create a team object and push each employee onto team object
+//const team = {};
+
+function init() {
+  inquirer
+    .prompt([...questionsCore])
+    .then((data) => {
+      generateEmployee(data);
+      return createFileAsync("employee.html", `${data.id}`);
+    })
+    .catch((err) => console.error(err));
+}
