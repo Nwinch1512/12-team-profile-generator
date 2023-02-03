@@ -146,7 +146,7 @@ function addEngineer() {
       engineerData.engineerName,
       engineerData.engineerId,
       engineerData.engineerEmail,
-      engineerData.engineerGitHub
+      engineerData.engineerGithub
     );
     team.push(engineer);
     addEmployee();
