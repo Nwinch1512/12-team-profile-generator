@@ -1,3 +1,5 @@
+// Importing modules
+const Employee = require("./lib/Employee.js");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -11,14 +13,12 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 
-const Employee = require("./lib/Employee.js");
-
-// TODO: Write Code to gather information about the development team members, and render the HTML file.
 const createFileAsync = util.promisify(fs.writeFile);
 
+//Setting up empty array to push team member objects to later
 let team = [];
 
-// array of questions for user
+// Array of questions for manager
 const questionsManager = [
   {
     type: "input",
@@ -87,13 +87,7 @@ const questionsIntern = [
     message: "Enter the intern's school",
   },
 ];
-// Set up inquirer to prompt user for questions to collect info on employees in software engineering team
-
-// Take response data and create an instance of each class to create an object for each employee
-//let employee = new Employee(name,id,email);
-
-// Create a team object and push each employee onto team object
-//const team = {};
+// Set up function using inquirer to prompt to collect manager details, create an instance of the Manager class to store the response in, and push response object to team array
 
 function init() {
   inquirer
@@ -115,17 +109,17 @@ function init() {
 
 init();
 
+// Function to add extra team members
+
 function addEmployee() {
   inquirer
     .prompt([
-      ...[
-        {
-          type: "list",
-          name: "teamMember",
-          message: "Please add a team member (using arrow keys)",
-          choices: ["Engineer", "Intern", "Finish building team"],
-        },
-      ],
+      {
+        type: "list",
+        name: "teamMember",
+        message: "Please add a team member (using arrow keys)",
+        choices: ["Engineer", "Intern", "Finish building team"],
+      },
     ])
     .then((data) => {
       if (data.teamMember === "Engineer") {
@@ -140,6 +134,7 @@ function addEmployee() {
     });
 }
 
+// Function to capture Engineer details to create instance of Engineer from class
 function addEngineer() {
   inquirer.prompt([...questionsEngineer]).then((engineerData) => {
     const engineer = new Engineer(
@@ -153,6 +148,7 @@ function addEngineer() {
   });
 }
 
+// Function to capture Intern details to create instance of Intern from class
 function addIntern() {
   inquirer.prompt([...questionsIntern]).then((internData) => {
     const intern = new Intern(
