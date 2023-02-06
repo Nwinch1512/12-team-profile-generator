@@ -84,9 +84,9 @@ const questionsIntern = [
     message: "Enter the intern's school",
   },
 ];
-// Set up function using inquirer to prompt to collect manager details, create an instance of the Manager class to store the response in, and push response object to team array
+//Function which uses inquirer to collect manager details, create an instance of the Manager class to store the response in, and push response object to team array
 
-function init() {
+function addManager() {
   inquirer
     .prompt([...questionsManager])
     .then((data) => {
@@ -104,7 +104,7 @@ function init() {
     .catch((err) => console.error(err));
 }
 
-init();
+addManager();
 
 // Function to add extra team members
 
@@ -130,7 +130,7 @@ function addEmployee() {
 }
 
 function buildTeam() {
-  // Create the output directory if the output path doesn't exist
+  // Create output directory if path doesn't exist
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR);
   }

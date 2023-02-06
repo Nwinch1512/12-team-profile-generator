@@ -1,0 +1,33 @@
+.jumbotron {
+  background-color: darkblue !important;
+  color: white !important;
+  border-radius: 0 !important;
+}
+
+.card-title {
+  min-height: 75px !important;
+}
+
+.card-header {
+  background-color: darkblue !important;
+  color: white !important;
+  min-height: 200px;
+}
+
+.card-body {
+  background-color: rgb(236, 235, 235) !important;
+}
+
+.employee-card {
+  margin: 10px !important;
+  border: none !important;
+  border-radius: 20px !important;
+  box-shadow: 5px 5px 20px rgb(82, 82, 82) !important;
+}
+
+/* Media query to make html mobile responsive */
+@media (max-width: 412px) {
+  .d-flex {
+    display: block !important;
+  }
+}
